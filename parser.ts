@@ -157,7 +157,7 @@ export function extractBookInfo(htmlContent: string, language: 'ca' | 'es' | 'en
 }
 
 // Alternative: More robust library extraction using regex
-export function extractLibraryStatusesRegex(htmlContent: string): BookStatus[] {
+export function extractBookStatus(htmlContent: string): BookStatus[] {
 	const libraries: BookStatus[] = [];
 
 	// Regex to match each library row

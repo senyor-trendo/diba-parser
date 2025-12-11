@@ -274,7 +274,7 @@ export function extractLibraryStatuses(htmlContent: string): BookStatus[] {
 }
 
 // Alternative regex-based library extraction (simpler)
-export function extractLibraryStatusesRegex(htmlContent: string): BookStatus[] {
+export function extractBookStatus(htmlContent: string): BookStatus[] {
 	const libraries: BookStatus[] = [];
 
 	// Find the table content
@@ -329,6 +329,6 @@ export function parseHtmlString(htmlString: string, language: 'ca'|'es'|'en'): {
 } {
 	return {
 		bookInfo: extractBookInfo(htmlString, language),
-		libraryStatuses: extractLibraryStatusesRegex(htmlString)
+		libraryStatuses: extractBookStatus(htmlString)
 	};
 }

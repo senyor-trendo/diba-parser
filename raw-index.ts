@@ -1,7 +1,7 @@
 // index.ts
 import fs from 'fs';
 import path from 'path';
-import { extractBookInfo, extractLibraryStatusesRegex } from './raw-parser';
+import { extractBookInfo, extractBookStatus } from './raw-parser';
 
 interface ProcessingOptions {
   inputDir: string;
@@ -19,7 +19,7 @@ function processHtmlFile(filePath: string, language: 'ca'|'es'|'en', outputDir: 
     const bookInfo = extractBookInfo(htmlContent, language);
     
     // Extract library statuses
-    const libraryStatuses = extractLibraryStatusesRegex(htmlContent);
+    const libraryStatuses = extractBookStatus(htmlContent);
     
     // Get the base filename without extension
     const baseName = path.basename(filePath, '.txt');

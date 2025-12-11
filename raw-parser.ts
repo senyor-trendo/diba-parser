@@ -12,7 +12,7 @@ export interface BookInfo {
 	permanentLink: string;
 }
 
-export interface LibraryStatus {
+export interface BookStatus {
 	location: string;
 	locationLink: string;
 	signature: string;
@@ -199,8 +199,8 @@ export function extractBookInfo(htmlContent: string, language: 'ca' | 'es' | 'en
 }
 
 // Function to extract library statuses
-export function extractLibraryStatuses(htmlContent: string): LibraryStatus[] {
-	const libraries: LibraryStatus[] = [];
+export function extractLibraryStatuses(htmlContent: string): BookStatus[] {
+	const libraries: BookStatus[] = [];
 
 	// Find the library items table
 	const tableStart = htmlContent.indexOf('<table class="bibItems"');
@@ -239,7 +239,7 @@ export function extractLibraryStatuses(htmlContent: string): LibraryStatus[] {
 				if (cells.length === 0) {
 					const linkMatch = cellContent.match(/<a[^>]*href="([^"]*)"[^>]*>([^<]*)<\/a>/);
 					if (linkMatch) {
-						const library: LibraryStatus = {
+						const library: BookStatus = {
 							location: decodeHtmlEntities(stripHtmlTags(linkMatch[2])).trim(),
 							locationLink: linkMatch[1],
 							signature: '',
@@ -274,8 +274,8 @@ export function extractLibraryStatuses(htmlContent: string): LibraryStatus[] {
 }
 
 // Alternative regex-based library extraction (simpler)
-export function extractLibraryStatusesRegex(htmlContent: string): LibraryStatus[] {
-	const libraries: LibraryStatus[] = [];
+export function extractLibraryStatusesRegex(htmlContent: string): BookStatus[] {
+	const libraries: BookStatus[] = [];
 
 	// Find the table content
 	const tableMatch = htmlContent.match(/<table[^>]*class="bibItems"[^>]*>([\s\S]*?)<\/table>/i);
@@ -307,7 +307,7 @@ export function extractLibraryStatusesRegex(htmlContent: string): LibraryStatus[
 			// Extract link from first cell if present
 			const linkMatch = rowContent.match(/<a[^>]*href="([^"]*)"[^>]*>([^<]*)<\/a>/);
 
-			const library: LibraryStatus = {
+			const library: BookStatus = {
 				location: cells[0] || '',
 				locationLink: linkMatch ? linkMatch[1] : '',
 				signature: cells[1] || '',
@@ -325,7 +325,7 @@ export function extractLibraryStatusesRegex(htmlContent: string): LibraryStatus[
 // Utility function to parse HTML from a string
 export function parseHtmlString(htmlString: string, language: 'ca'|'es'|'en'): {
 	bookInfo: BookInfo;
-	libraryStatuses: LibraryStatus[];
+	libraryStatuses: BookStatus[];
 } {
 	return {
 		bookInfo: extractBookInfo(htmlString, language),

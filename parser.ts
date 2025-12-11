@@ -14,7 +14,7 @@ export interface BookInfo {
 	permanentLink: string;
 }
 
-export interface LibraryStatus {
+export interface BookStatus {
 	location: string;
 	locationLink: string;
 	signature: string;
@@ -157,8 +157,8 @@ export function extractBookInfo(htmlContent: string, language: 'ca' | 'es' | 'en
 }
 
 // Alternative: More robust library extraction using regex
-export function extractLibraryStatusesRegex(htmlContent: string): LibraryStatus[] {
-	const libraries: LibraryStatus[] = [];
+export function extractLibraryStatusesRegex(htmlContent: string): BookStatus[] {
+	const libraries: BookStatus[] = [];
 
 	// Regex to match each library row
 	const rowRegex = /<tr\s+class="bibItemsEntry">(.*?)<\/tr>/gs;
@@ -185,13 +185,13 @@ export function extractLibraryStatusesRegex(htmlContent: string): LibraryStatus[
 				const cleanLocation = location.replace(/&nbsp;/g, ' ').trim();
 
 				// Create library entry
-				const library: Partial<LibraryStatus> = {
+				const library: Partial<BookStatus> = {
 					location: cleanLocation,
 					locationLink: locationLink
 				};
 
 				// Add to array
-				libraries.push({} as LibraryStatus);
+				libraries.push({} as BookStatus);
 				const lastIndex = libraries.length - 1;
 				libraries[lastIndex].location = cleanLocation;
 				libraries[lastIndex].locationLink = locationLink;

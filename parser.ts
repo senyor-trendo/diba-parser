@@ -7,7 +7,7 @@ export interface BookInfo {
 	edition: string;
 	description: string;
 	collection: string;
-	synopsis: string;
+	summary: string;
 	uniformTitle: string;
 	isbn: string;
 	imageUrl: string;
@@ -23,36 +23,36 @@ export interface LibraryStatus {
 }
 
 const FIELDS = {
-	ca:{
+	ca: {
 		author: 'Autor/Artista',
 		collection: 'Col&middot;lecci&oacute;',
 		description: 'Descripci&oacute;',
 		edition: 'Edici&oacute;',
 		isbn: 'ISBN',
 		pub: 'Publicació',
-		synopsis: 'Sinopsi',
+		summary: 'Sinopsi',
 		title: 'Títol',
 		uniformTitle: 'Títol uniforme'
 	},
-	en:{
+	en: {
 		author: 'Author/Artist',
 		collection: 'Series',
 		description: 'Description',
 		edition: 'Edition',
 		isbn: 'ISBN',
 		pub: 'Publication',
-		synopsis: 'Summary',
+		summary: 'Summary',
 		title: 'Title',
 		uniformTitle: 'Uniform title'
 	},
-	es:{
+	es: {
 		author: 'Autor/Artista',
 		collection: 'Colección',
 		description: 'Descripción',
 		edition: 'Edición',
 		isbn: 'ISBN',
 		pub: 'Publicación',
-		synopsis: 'Sumario',
+		summary: 'Sumario',
 		title: 'Título',
 		uniformTitle: 'Título uniforme'
 	}
@@ -89,7 +89,7 @@ function extractByLabel(html: string, label: string): string {
 }
 
 // Main function to extract book info
-export function extractBookInfo(htmlContent: string, language:'ca'|'es'|'en' = 'ca'): BookInfo {
+export function extractBookInfo(htmlContent: string, language: 'ca' | 'es' | 'en' = 'ca'): BookInfo {
 	const fields = FIELDS[language];
 
 	// Extract title - find the first bibInfoData after Títol label
@@ -112,8 +112,8 @@ export function extractBookInfo(htmlContent: string, language:'ca'|'es'|'en' = '
 	// Extract collection
 	const collection = extractByLabel(htmlContent, fields.collection);
 
-	// Extract synopsis
-	const synopsis = extractByLabel(htmlContent, fields.synopsis);
+	// Extract summary
+	const summary = extractByLabel(htmlContent, fields.summary);
 
 	// Extract uniform title
 	const uniformTitle = extractByLabel(htmlContent, fields.uniformTitle);
@@ -148,7 +148,7 @@ export function extractBookInfo(htmlContent: string, language:'ca'|'es'|'en' = '
 		edition,
 		description,
 		collection,
-		synopsis,
+		summary,
 		uniformTitle,
 		isbn,
 		imageUrl,

@@ -1,59 +1,14 @@
-export interface BookInfo {
-	title: string;
-	author: string;
-	publication: string;
-	edition: string;
-	description: string;
-	collection: string;
-	summary: string;
-	uniformTitle: string;
-	isbn: string;
-	imageUrl: string;
-	permanentLink: string;
-}
+import { BookInfo, BookStatus, FIELDS, PageType } from "./parser.interfaces";
 
-export interface BookStatus {
-	location: string;
-	locationLink: string;
-	signature: string;
-	status: string;
-	notes: string;
-}
-
-const FIELDS = {
-	ca: {
-		author: 'Autor/Artista',
-		collection: 'Col&middot;lecci&oacute;',
-		description: 'Descripci&oacute;',
-		edition: 'Edici&oacute;',
-		isbn: 'ISBN',
-		pub: 'Publicació',
-		summary: 'Sinopsi',
-		title: 'Títol',
-		uniformTitle: 'Títol uniforme'
-	},
-	en: {
-		author: 'Author/Artist',
-		collection: 'Series',
-		description: 'Description',
-		edition: 'Edition',
-		isbn: 'ISBN',
-		pub: 'Publication',
-		summary: 'Summary',
-		title: 'Title',
-		uniformTitle: 'Uniform title'
-	},
-	es: {
-		author: 'Autor/Artista',
-		collection: 'Colección',
-		description: 'Descripción',
-		edition: 'Edición',
-		isbn: 'ISBN',
-		pub: 'Publicación',
-		summary: 'Sumario',
-		title: 'Título',
-		uniformTitle: 'Título uniforme'
+export function checkPageType(html:string, language:string): PageType{
+	if(html.indexOf(FIELDS[language].pageType.noResults) !== -1){
+		return PageType.NoResults;
 	}
+	else if(html.indexOf(FIELDS[language].pageType.list) !== -1){
+		return PageType.List;
+	}
+
+	return PageType.Detail;
 }
 
 // Helper function to decode HTML entities
@@ -130,7 +85,7 @@ function extractByLabel(html: string, label: string): string {
 }
 
 // Main function to extract book info
-export function extractBookInfo(htmlContent: string, language: 'ca' | 'es' | 'en' = 'ca'): BookInfo {
+export function extractBookInfo(htmlContent: string, language: string = 'ca'): BookInfo {
 	const fields = FIELDS[language];
 
 	// Extract title

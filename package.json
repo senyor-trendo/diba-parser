@@ -13,7 +13,6 @@
 	},
 	"scripts": {
 		"parse": "ts-node index.ts",
-		"raw-parse": "ts-node raw-index.ts",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	}
 }

@@ -1,0 +1,55 @@
+export interface BookInfo {
+	title: string;
+	author: string;
+	publication: string;
+	edition: string;
+	description: string;
+	collection: string;
+	summary: string;
+	uniformTitle: string;
+	isbn: string;
+	imageUrl: string;
+	permanentLink: string;
+}
+
+export interface BookStatus {
+	location: string;
+	locationLink: string;
+	signature: string;
+	status: string;
+	notes: string;
+}
+
+export interface BookListItem {
+    title: string;
+    imageUrl: string;
+    detailLink: string;
+    statuses: BookStatus[]; // Current availability from list view
+    author?: string;
+    year?: string;
+}
+
+export enum PageType{
+	NoResults = "no-results", 
+	Detail = "detail", 
+	List = "list"
+}
+// Allow any string key (e.g., 'ca', 'en', 'es', 'fr', etc.)
+export interface FieldTypes {
+    [languageCode: string]: FieldLabels;
+}
+interface FieldLabels {
+    author: string;
+    collection: string;
+    description: string;
+    edition: string;
+    isbn: string;
+    pub: string;
+    summary: string;
+    title: string;
+    uniformTitle: string;
+	pageType:{
+		noResults: string,
+		list: string
+	}
+}

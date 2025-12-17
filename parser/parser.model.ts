@@ -15,11 +15,17 @@ export interface BookInfo {
 export interface BookStatus {
 	location: string;
 	locationLink: string;
-	signature: string;
-	status: string;
-	notes: string;
+	status: BookStatusType;
+	notes?: string;
+	signature?: string;
+	statusText?: string;
 }
-
+export enum BookStatusType{
+	Available = "available", 
+	OnLoan = "loan", 
+	Other = "other",
+	WaitingForRetrieve = "waiting"
+}
 export interface BookListItem {
     title: string;
     imageUrl: string;
@@ -51,5 +57,10 @@ interface FieldLabels {
 	pageType:{
 		noResults: string,
 		list: string
+	},
+	status: {
+		available: string,
+		onLoan: string,
+		waitingForRetrieve: string
 	}
 }

@@ -13,7 +13,12 @@ export const FIELDS: FieldTypes = {
 		uniformTitle: 'Títol uniforme',
 		pageType:{
 			noResults: 'NO HI HA RESULTATS',
-			list: 'Ordenat per'
+			list: '/screens/img/botons/save_to_my_lists.gif'
+		},
+		status: {
+			available: 'Disponible',
+			onLoan: 'VENÇ',
+			waitingForRetrieve: 'Prestatge reserva'
 		}
 	},
 	en: {
@@ -28,7 +33,12 @@ export const FIELDS: FieldTypes = {
 		uniformTitle: 'Uniform title',
 		pageType:{
 			noResults: 'NO ENTRIES FOUND',
-			list: 'Sorted by'
+			list: '/screens/img/botons/save_to_my_lists.gif'
+		},
+		status: {
+			available: 'Available',
+			onLoan: 'DUE',
+			waitingForRetrieve: 'On Hold Shelf'
 		}
 	},
 	es: {
@@ -43,7 +53,12 @@ export const FIELDS: FieldTypes = {
 		uniformTitle: 'Título uniforme',
 		pageType:{
 			noResults: 'NO HAY RESULTADOS',
-			list: 'Ordenado por'
+			list: '/screens/img/botons/save_to_my_lists.gif'
+		},
+		status: {
+			available: 'Disponible',
+			onLoan: 'VENCE',
+			waitingForRetrieve: 'Estante reserva'
 		}
 	}
 }

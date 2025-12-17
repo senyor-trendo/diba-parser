@@ -1,7 +1,8 @@
 import { decodeHtmlEntities, stripHtmlTags } from "./parser-utils";
-import { BookStatus } from "./parser.model";
+import { FIELDS } from "./parser.config";
+import { BookStatus, BookStatusType } from "./parser.model";
 
-export function extractBookStatus(html: string): BookStatus[] {
+export function extractBookStatus(html: string, language: string = 'ca'): BookStatus[] {
 	const libraries: BookStatus[] = [];
 
 	// Find the table content
@@ -31,15 +32,18 @@ export function extractBookStatus(html: string): BookStatus[] {
 		}
 
 		if (cells.length >= 4) {
-			// Extract link from first cell if present
+			const location = getLocation(cells[0]);
 			const linkMatch = rowContent.match(/<a[^>]*href="([^"]*)"[^>]*>([^<]*)<\/a>/);
-
+			const statusText = cells[2] || '';
+			const status = getStatus(statusText, language);
+			
 			const library: BookStatus = {
-				location: cells[0] || '',
+				location: location,
 				locationLink: linkMatch ? linkMatch[1] : '',
-				signature: cells[1] || '',
-				status: cells[2] || '',
-				notes: cells[3] || ''
+				signature: cells[1] || undefined,
+				status: status,
+				statusText: status !== BookStatusType.Available ? statusText : undefined,
+				notes: cells[3] || undefined
 			};
 
 			libraries.push(library);
@@ -47,4 +51,33 @@ export function extractBookStatus(html: string): BookStatus[] {
 	}
 
 	return libraries;
+}
+function getLocation(text: string): string{
+
+	if(text){
+		//Name comes often like SABADELL.La Serra-Infantil
+		const lastSeparator = text.lastIndexOf('-');
+
+		if(lastSeparator !== -1){
+			text = text.substring(0, lastSeparator);
+		}
+
+		return text;
+	}
+
+	return '';
+}
+function getStatus(text: string, language: string = 'ca'): BookStatusType {
+	if (text === FIELDS[language].status.available) {
+		return BookStatusType.Available;
+	}
+	if (text.indexOf(FIELDS[language].status.onLoan) !== -1) {
+		return BookStatusType.OnLoan;
+	}
+	if (text === FIELDS[language].status.waitingForRetrieve) {
+		return BookStatusType.WaitingForRetrieve;
+	}
+	
+
+	return BookStatusType.Other;
 }

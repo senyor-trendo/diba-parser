@@ -43,7 +43,7 @@ function processHtmlFile(filePath: string, language: string, outputDir: string):
 
 			case PageType.Detail:
 				const bookInfo = extractBookFromDetail(html, language);
-				const bookStatus = extractBookStatus(html);
+				const bookStatus = extractBookStatus(html, language);
 
 				// Create output filenames
 				const bookResultsFile = path.join(outputDir, `${baseName}.book-results.json`);

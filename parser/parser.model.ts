@@ -21,7 +21,8 @@ export interface BookStatus {
 	statusText?: string;
 }
 export enum BookStatusType{
-	Available = "available", 
+	Available = "available",
+	Excluded = "excluded",
 	OnLoan = "loan", 
 	Other = "other",
 	WaitingForRetrieve = "waiting"
@@ -64,6 +65,7 @@ interface FieldLabels {
 	},
 	status: {
 		available: string,
+		excluded: string,
 		onLoan: string,
 		waitingForRetrieve: string
 	}

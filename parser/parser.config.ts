@@ -17,6 +17,7 @@ export const FIELDS: FieldTypes = {
 		},
 		status: {
 			available: 'Disponible',
+			excluded: 'Exclòs de préstec',
 			onLoan: 'VENÇ',
 			waitingForRetrieve: 'Prestatge reserva'
 		}
@@ -37,6 +38,7 @@ export const FIELDS: FieldTypes = {
 		},
 		status: {
 			available: 'Available',
+			excluded: 'Non-circulating',
 			onLoan: 'DUE',
 			waitingForRetrieve: 'On Hold Shelf'
 		}
@@ -57,6 +59,7 @@ export const FIELDS: FieldTypes = {
 		},
 		status: {
 			available: 'Disponible',
+			excluded: 'Excluido de préstamo',
 			onLoan: 'VENCE',
 			waitingForRetrieve: 'Estante reserva'
 		}

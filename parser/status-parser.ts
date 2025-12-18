@@ -36,7 +36,7 @@ export function extractBookStatus(html: string, language: string = 'ca'): BookSt
 			const linkMatch = rowContent.match(/<a[^>]*href="([^"]*)"[^>]*>([^<]*)<\/a>/);
 			const statusText = cells[2] || '';
 			const status = getStatus(statusText, language);
-			
+
 			const library: BookStatus = {
 				location: location,
 				locationLink: linkMatch ? linkMatch[1] : '',
@@ -52,13 +52,12 @@ export function extractBookStatus(html: string, language: string = 'ca'): BookSt
 
 	return libraries;
 }
-function getLocation(text: string): string{
-
-	if(text){
+function getLocation(text: string): string {
+	if (text) {
 		//Name comes often like SABADELL.La Serra-Infantil
 		const lastSeparator = text.lastIndexOf('-');
 
-		if(lastSeparator !== -1){
+		if (lastSeparator !== -1) {
 			text = text.substring(0, lastSeparator);
 		}
 
@@ -71,13 +70,15 @@ function getStatus(text: string, language: string = 'ca'): BookStatusType {
 	if (text === FIELDS[language].status.available) {
 		return BookStatusType.Available;
 	}
-	if (text.indexOf(FIELDS[language].status.onLoan) !== -1) {
-		return BookStatusType.OnLoan;
-	}
 	if (text === FIELDS[language].status.waitingForRetrieve) {
 		return BookStatusType.WaitingForRetrieve;
 	}
-	
+	if (text === FIELDS[language].status.excluded) {
+		return BookStatusType.Excluded;
+	}
+	if (text.indexOf(FIELDS[language].status.onLoan) !== -1) {
+		return BookStatusType.OnLoan;
+	}
 
 	return BookStatusType.Other;
 }

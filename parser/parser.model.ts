@@ -7,7 +7,7 @@ export interface BookInfo {
 	collection: string;
 	summary: string;
 	uniformTitle: string;
-	isbn: string;
+	isbn: number;
 	imageUrl: string;
 	permanentLink: string;
 }

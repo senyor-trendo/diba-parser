@@ -67,7 +67,7 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 		collection,
 		summary,
 		uniformTitle,
-		isbn: isbn? parseInt(isbn) : 0,
+		isbn: isbn? parseInt(isbn) : undefined,
 		imageUrl,
 		permanentLink
 	};

@@ -7,7 +7,7 @@ export interface BookInfo {
 	collection: string;
 	summary: string;
 	uniformTitle: string;
-	isbn: number;
+	isbn?: number;
 	imageUrl: string;
 	permanentLink: string;
 }
@@ -25,6 +25,11 @@ export enum BookStatusType{
 	OnLoan = "loan", 
 	Other = "other",
 	WaitingForRetrieve = "waiting"
+}
+export interface BookListResults {
+	totalResults: number,
+	nextPage?: string,
+	items: BookListItem[]
 }
 export interface BookListItem {
     title: string;

@@ -49,6 +49,9 @@ export function decodeHtmlEntities(text: string): string {
 		return entityMap[match.toLowerCase()] || match;
 	});
 }
+export function fixBookCollection(text: string): string {
+	return text.replaceAll(' ;', ';');
+}
 export function fixBookTitle(title: string): string {
 	const lastIndexOfSlash = title.lastIndexOf('/');
 

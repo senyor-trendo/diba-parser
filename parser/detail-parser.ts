@@ -1,4 +1,4 @@
-import { decodeHtmlEntities, fixBookTitle, stripHtmlTags } from "./parser-utils";
+import { decodeHtmlEntities, fixBookCollection, fixBookTitle, stripHtmlTags } from "./parser-utils";
 import { FIELDS } from "./parser.config";
 import { BookInfo } from "./parser.model";
 
@@ -64,7 +64,7 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 		publication,
 		edition,
 		description,
-		collection,
+		collection: fixBookCollection(collection),
 		summary,
 		uniformTitle,
 		isbn: isbn? parseInt(isbn) : undefined,

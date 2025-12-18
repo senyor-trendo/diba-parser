@@ -1,9 +1,9 @@
 import { decodeHtmlEntities, fixBookTitle, stripHtmlTags } from "./parser-utils";
-import { BookListItem } from "./parser.model";
+import { BookListItem, BookListResults } from "./parser.model";
 import { extractBookStatus } from "./status-parser";
 
 // Function to extract books from a list results page
-export function extractBooksFromList(html: string, language: string = 'ca'): BookListItem[] {
+export function extractBooksFromList(html: string, language: string = 'ca'): BookListResults {
 	const books: BookListItem[] = [];
 
 	// First, let's find all the briefCitRow sections
@@ -123,5 +123,12 @@ export function extractBooksFromList(html: string, language: string = 'ca'): Boo
 		currentIndex = entryEnd;
 	}
 
-	return books;
+	return {
+		totalResults: books.length < 10 ? books.length : getTotalResults(html),
+		items: books
+	}
+}
+function getTotalResults(html: string): number {
+	const numbers = html.match(/browseHeaderData[^>]*>([^<]+)</)?.[1]?.match(/\d+/g);
+	return numbers ? parseInt(numbers[numbers.length - 1], 10) : 0;
 }

@@ -37,7 +37,7 @@ function processHtmlFile(filePath: string, language: string, outputDir: string):
 				console.log(`✓ Processed: ${path.basename(filePath)}`);
 				console.log(`List page`);
 				console.log(`  - Book info saved to: ${path.basename(bookListFile)}`);
-				console.log(`  - Found ${bookList.length} library entries`);
+				console.log(`  - Found ${bookList.totalResults} library entries`);
 
 				break;
 

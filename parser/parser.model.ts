@@ -39,7 +39,6 @@ export interface BookListItem {
     author?: string;
     year?: string;
 }
-
 export enum PageType{
 	NoResults = "no-results", 
 	Detail = "detail", 

@@ -13,7 +13,7 @@ export const FIELDS: FieldTypes = {
 		uniformTitle: 'Títol uniforme',
 		pageType:{
 			noResults: 'NO HI HA RESULTATS',
-			list: '/screens/img/botons/save_to_my_lists.gif'
+			list: '/screens/img/botons/save_to_my_lists'
 		},
 		status: {
 			available: 'Disponible',
@@ -33,7 +33,7 @@ export const FIELDS: FieldTypes = {
 		uniformTitle: 'Uniform title',
 		pageType:{
 			noResults: 'NO ENTRIES FOUND',
-			list: '/screens/img/botons/save_to_my_lists.gif'
+			list: '/screens/img/botons/save_to_my_lists'
 		},
 		status: {
 			available: 'Available',
@@ -53,7 +53,7 @@ export const FIELDS: FieldTypes = {
 		uniformTitle: 'Título uniforme',
 		pageType:{
 			noResults: 'NO HAY RESULTADOS',
-			list: '/screens/img/botons/save_to_my_lists.gif'
+			list: '/screens/img/botons/save_to_my_lists'
 		},
 		status: {
 			available: 'Disponible',

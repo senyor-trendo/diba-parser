@@ -49,7 +49,15 @@ export function decodeHtmlEntities(text: string): string {
 		return entityMap[match.toLowerCase()] || match;
 	});
 }
+export function fixBookTitle(title: string): string {
+	const lastIndexOfSlash = title.lastIndexOf('/');
 
+	if (lastIndexOfSlash !== -1) {
+		title = title.substring(0, lastIndexOfSlash);
+	}
+
+	return title.replaceAll(' :', ':');
+}
 // Helper function to clean HTML tags from text
 export function stripHtmlTags(text: string): string {
 	return text.replace(/<[^>]*>/g, '');

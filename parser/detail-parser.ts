@@ -1,4 +1,4 @@
-import { decodeHtmlEntities, stripHtmlTags } from "./parser-utils";
+import { decodeHtmlEntities, fixBookTitle, stripHtmlTags } from "./parser-utils";
 import { FIELDS } from "./parser.config";
 import { BookInfo } from "./parser.model";
 
@@ -59,7 +59,7 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 	}
 
 	return {
-		title,
+		title: fixBookTitle(title),
 		author,
 		publication,
 		edition,

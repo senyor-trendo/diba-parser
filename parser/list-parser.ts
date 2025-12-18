@@ -1,4 +1,4 @@
-import { decodeHtmlEntities, stripHtmlTags } from "./parser-utils";
+import { decodeHtmlEntities, fixBookTitle, stripHtmlTags } from "./parser-utils";
 import { BookListItem } from "./parser.model";
 import { extractBookStatus } from "./status-parser";
 
@@ -111,7 +111,7 @@ export function extractBooksFromList(html: string, language: string = 'ca'): Boo
 		// Only add book if we have at least a title
 		if (title) {
 			books.push({
-				title,
+				title: fixBookTitle(title),
 				imageUrl,
 				detailLink: detailLink || '',
 				statuses,

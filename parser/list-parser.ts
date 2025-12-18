@@ -125,8 +125,16 @@ export function extractBooksFromList(html: string, language: string = 'ca'): Boo
 
 	return {
 		totalResults: books.length < 10 ? books.length : getTotalResults(html),
+		nextPage: books.length < 10 ? undefined : extractLink(html),
 		items: books
 	}
+}
+function extractLink(html: string): string | undefined {
+	// Find the span with id_icon_paging_prev and look for its parent <a>
+	const regex = /<a\s+[^>]*href="([^"]*)"[^>]*>\s*<[^>]*id="id_icon_paging_prev"[^>]*>/;
+	const match = html.match(regex);
+
+	return match ? decodeURIComponent(match[1]) : undefined;
 }
 function getTotalResults(html: string): number {
 	const numbers = html.match(/browseHeaderData[^>]*>([^<]+)</)?.[1]?.match(/\d+/g);

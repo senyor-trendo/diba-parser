@@ -1,15 +1,15 @@
 export interface BookInfo {
-	title: string;
 	author: string;
-	publication: string;
+	collection: string;
 	edition: string;
 	description: string;
-	collection: string;
+	requestLink: string;
+	publication: string;
 	summary: string;
+	title: string;
 	uniformTitle: string;
-	isbn?: number;
 	imageUrl: string;
-	permanentLink: string;
+	isbn?: number;
 }
 
 export interface BookStatus {
@@ -20,10 +20,10 @@ export interface BookStatus {
 	signature?: string;
 	statusText?: string;
 }
-export enum BookStatusType{
+export enum BookStatusType {
 	Available = "available",
 	Excluded = "excluded",
-	OnLoan = "loan", 
+	OnLoan = "loan",
 	Other = "other",
 	WaitingForRetrieve = "waiting"
 }
@@ -33,33 +33,33 @@ export interface BookListResults {
 	items: BookListItem[]
 }
 export interface BookListItem {
-    title: string;
-    imageUrl: string;
-    detailLink: string;
-    statuses: BookStatus[]; // Current availability from list view
-    author?: string;
-    year?: string;
+	title: string;
+	imageUrl: string;
+	detailLink: string;
+	statuses: BookStatus[]; // Current availability from list view
+	author?: string;
+	year?: string;
 }
-export enum PageType{
-	NoResults = "no-results", 
-	Detail = "detail", 
+export enum PageType {
+	NoResults = "no-results",
+	Detail = "detail",
 	List = "list"
 }
 // Allow any string key (e.g., 'ca', 'en', 'es', 'fr', etc.)
 export interface FieldTypes {
-    [languageCode: string]: FieldLabels;
+	[languageCode: string]: FieldLabels;
 }
 interface FieldLabels {
-    author: string;
-    collection: string;
-    description: string;
-    edition: string;
-    isbn: string;
-    pub: string;
-    summary: string;
-    title: string;
-    uniformTitle: string;
-	pageType:{
+	author: string;
+	collection: string;
+	description: string;
+	edition: string;
+	isbn: string;
+	pub: string;
+	summary: string;
+	title: string;
+	uniformTitle: string;
+	pageType: {
 		noResults: string,
 		list: string
 	},

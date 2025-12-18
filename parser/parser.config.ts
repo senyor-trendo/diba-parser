@@ -1,5 +1,6 @@
 import { FieldTypes } from './parser.model';
 
+export const SEARCH_BASE_URL = 'https://aladi.diba.cat'
 export const FIELDS: FieldTypes = {
 	ca: {
 		author: 'Autor/Artista',

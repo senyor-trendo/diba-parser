@@ -20,6 +20,13 @@ function extractByLabel(html: string, label: string): string {
 
 	return '';
 }
+function extractRequestLink(html: string): string {
+  // Look for the specific request button image and extract parent link
+  const regex = /<a\s+[^>]*href="([^"]*)"[^>]*>\s*<img[^>]*src="[^"]*\/screens\/img\/botons\/request[^"]*"[^>]*>/i;
+  const match = html.match(regex);
+  
+  return match ? decodeURIComponent(match[1]) : '';
+}
 
 // Main function to extract book info
 export function extractBookFromDetail(html: string, language: string = 'ca'): BookInfo {
@@ -34,6 +41,7 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 	const summary = extractByLabel(html, fields.summary);
 	const uniformTitle = extractByLabel(html, fields.uniformTitle);
 	const isbn = extractByLabel(html, fields.isbn);
+	const requestLink = extractRequestLink(html);
 
 	// Extract image URL
 	let imageUrl = '';
@@ -69,6 +77,6 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 		uniformTitle,
 		isbn: isbn? parseInt(isbn) : undefined,
 		imageUrl,
-		permanentLink
+		requestLink
 	};
 }

@@ -90,6 +90,7 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 			imageUrl = fallbackMatch[1];
 		}
 	}
+	imageUrl = imageUrl.replace('&log=0&m=g', '');
 
 	// Extract permanent link
 	let permanentLink = '';

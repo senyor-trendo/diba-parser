@@ -21,11 +21,22 @@ function extractByLabel(html: string, label: string): string {
 	return '';
 }
 function extractRequestLink(html: string): string {
-  // Look for the specific request button image and extract parent link
-  const regex = /<a\s+[^>]*href="([^"]*)"[^>]*>\s*<img[^>]*src="[^"]*\/screens\/img\/botons\/request[^"]*"[^>]*>/i;
-  const match = html.match(regex);
-  
-  return match ? decodeURIComponent(match[1]) : '';
+	// Look for the specific request button image and extract parent link
+	const regex = /<a\s+[^>]*href="([^"]*)"[^>]*>\s*<img[^>]*src="[^"]*\/screens\/img\/botons\/request[^"]*"[^>]*>/i;
+	const match = html.match(regex);
+
+	return match ? decodeURIComponent(match[1]) : '';
+}
+function extractStatusLink(html: string): string | undefined {
+	// More robust: find the form that contains name="volume" input
+	const formMatch = html.match(/<form[^>]*>[\s\S]*?name="volume"[\s\S]*?<\/form>/);
+
+	if (!formMatch) return undefined;
+
+	// Extract the action from the form tag
+	const actionMatch = formMatch[0].match(/action="([^"]*)"/);
+
+	return actionMatch ? decodeURIComponent(actionMatch[1]) : undefined;
 }
 
 // Main function to extract book info
@@ -75,8 +86,9 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 		collection: fixBookCollection(collection),
 		summary,
 		uniformTitle,
-		isbn: isbn? parseInt(isbn) : undefined,
+		isbn: isbn ? parseInt(isbn) : undefined,
 		imageUrl,
-		requestLink
+		requestLink,
+		allStatusLink: extractStatusLink(html)
 	};
 }

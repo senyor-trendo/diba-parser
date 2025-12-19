@@ -9,6 +9,7 @@ export interface BookInfo {
 	title: string;
 	uniformTitle: string;
 	imageUrl: string;
+	allStatusLink?: string;
 	isbn?: number;
 }
 

@@ -56,8 +56,7 @@ function getLocation(text: string): string {
 	if (text) {
 		//Name comes often like SABADELL.La Serra-Infantil
 		const separator = text.indexOf('-');
-		console.log(text, separator)
-
+		
 		if (separator !== -1) {
 			text = text.substring(0, separator);
 		}

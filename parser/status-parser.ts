@@ -55,10 +55,11 @@ export function extractBookStatus(html: string, language: string = 'ca'): BookSt
 function getLocation(text: string): string {
 	if (text) {
 		//Name comes often like SABADELL.La Serra-Infantil
-		const lastSeparator = text.lastIndexOf('-');
+		const separator = text.indexOf('-');
+		console.log(text, separator)
 
-		if (lastSeparator !== -1) {
-			text = text.substring(0, lastSeparator);
+		if (separator !== -1) {
+			text = text.substring(0, separator);
 		}
 
 		return text;

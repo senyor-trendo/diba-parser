@@ -12,7 +12,6 @@ export interface BookInfo {
 	allStatusLink?: string;
 	isbn?: number;
 }
-
 export interface BookStatus {
 	location: string;
 	locationLink: string;

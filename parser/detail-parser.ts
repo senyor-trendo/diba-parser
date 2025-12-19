@@ -20,6 +20,12 @@ function extractByLabel(html: string, label: string): string {
 
 	return '';
 }
+/**
+ * Extracts the link to request the item
+ *  
+ * @param html 
+ * @returns 
+ */
 function extractRequestLink(html: string): string {
 	// Look for the specific request button image and extract parent link
 	const regex = /<a\s+[^>]*href="([^"]*)"[^>]*>\s*<img[^>]*src="[^"]*\/screens\/img\/botons\/request[^"]*"[^>]*>/i;
@@ -27,16 +33,22 @@ function extractRequestLink(html: string): string {
 
 	return match ? decodeURIComponent(match[1]) : '';
 }
+/**
+ * Extracts the link to the page that show all the libraries that have the item and its status
+ * 
+ * @param html 
+ * @returns 
+ */
 function extractStatusLink(html: string): string | undefined {
-	// More robust: find the form that contains name="volume" input
+	// find the form that contains name="volume" input
 	const formMatch = html.match(/<form[^>]*>[\s\S]*?name="volume"[\s\S]*?<\/form>/);
 
-	if (!formMatch) return undefined;
-
-	// Extract the action from the form tag
+	if (!formMatch){
+		return undefined;
+	}
 	const actionMatch = formMatch[0].match(/action="([^"]*)"/);
 
-	return actionMatch ? decodeURIComponent(actionMatch[1]) : undefined;
+	return actionMatch && actionMatch.length > 0 ? decodeURIComponent(actionMatch[1]) : undefined;
 }
 
 // Main function to extract book info

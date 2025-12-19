@@ -2,7 +2,13 @@ import { decodeHtmlEntities, fixBookCollection, fixBookTitle, stripHtmlTags } fr
 import { FIELDS } from "./parser.config";
 import { BookInfo } from "./parser.model";
 
-// Helper function to extract text by label in tables
+/**
+ * Extracts text by label in tables
+ * 
+ * @param html 
+ * @param label 
+ * @returns 
+ */
 function extractByLabel(html: string, label: string): string {
 	// Pattern to find the label and its corresponding data cell
 	const pattern = new RegExp(
@@ -13,9 +19,8 @@ function extractByLabel(html: string, label: string): string {
 	const match = html.match(pattern);
 	if (match && match[1]) {
 		const content = match[1];
-		// Clean the content
-		const cleaned = stripHtmlTags(content).trim();
-		return decodeHtmlEntities(cleaned);
+		
+		return decodeHtmlEntities(stripHtmlTags(content).trim());
 	}
 
 	return '';
@@ -48,10 +53,15 @@ function extractStatusLink(html: string): string | undefined {
 	}
 	const actionMatch = formMatch[0].match(/action="([^"]*)"/);
 
-	return actionMatch && actionMatch.length > 0 ? decodeURIComponent(actionMatch[1]) : undefined;
+	return actionMatch ? decodeURIComponent(actionMatch[1]) : undefined;
 }
-
-// Main function to extract book info
+/**
+ * Extracts info from detail page
+ * 
+ * @param html 
+ * @param language 
+ * @returns 
+ */
 export function extractBookFromDetail(html: string, language: string = 'ca'): BookInfo {
 	const fields = FIELDS[language];
 

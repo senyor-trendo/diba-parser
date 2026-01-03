@@ -61,7 +61,7 @@ function getLocation(text: string): string {
 			text = text.substring(0, separator);
 		}
 
-		return text;
+		return text.split(/\r\n|\r|\n/)[0].trim(); //Remove possible text afterwards
 	}
 
 	return '';

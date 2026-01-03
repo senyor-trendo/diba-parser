@@ -49,8 +49,13 @@ export function decodeHtmlEntities(text: string): string {
 		return entityMap[match.toLowerCase()] || match;
 	});
 }
-export function fixBookCollection(text: string): string {
-	return text.replaceAll(' ;', ';');
+export function cleanText(text: string): string {
+  return text
+    .replace(/\s*:\s*/g, ': ')
+    .replace(/\s*;\s*/g, '; ')
+    .replace(/\s*,\s*/g, ', ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
 }
 export function fixBookTitle(title: string): string {
 	const lastIndexOfSlash = title.lastIndexOf('/');
@@ -59,7 +64,7 @@ export function fixBookTitle(title: string): string {
 		title = title.substring(0, lastIndexOfSlash);
 	}
 
-	return title.replaceAll(' :', ':');
+	return cleanText(title);
 }
 // Helper function to clean HTML tags from text
 export function stripHtmlTags(text: string): string {

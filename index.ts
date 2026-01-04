@@ -5,7 +5,7 @@ import { PageType } from './parser/parser.model';
 import { checkPageType } from './parser/parser-utils';
 import { extractBooksFromList } from './parser/list-parser';
 import { extractBookFromDetail } from './parser/detail-parser';
-import { extractBookStatus } from './parser/status-parser';
+import BookStatusParser from './parser/status-parser';
 
 interface ProcessingOptions {
 	inputDir: string;
@@ -15,6 +15,7 @@ interface ProcessingOptions {
 
 // Function to process a single HTML file
 function processHtmlFile(filePath: string, language: string, outputDir: string): void {
+	const currentTime = Date.now();
 	try {
 		// Read the HTML content from the file
 		const html = fs.readFileSync(filePath, 'utf-8');
@@ -43,7 +44,7 @@ function processHtmlFile(filePath: string, language: string, outputDir: string):
 
 			case PageType.Detail:
 				const bookInfo = extractBookFromDetail(html, language);
-				const bookStatus = extractBookStatus(html, language);
+				const bookStatus = BookStatusParser.parse(html, language);
 
 				// Create output filenames
 				const bookResultsFile = path.join(outputDir, `${baseName}.book-results.json`);
@@ -60,6 +61,8 @@ function processHtmlFile(filePath: string, language: string, outputDir: string):
 				console.log(`  - Found ${bookStatus.length} library entries`);
 				break;
 		}
+
+		console.log(`${(Date.now() - currentTime)/1000*60}s`)
 	}
 	catch (error) {
 		console.error(`✗ Error processing ${filePath}:`, error);

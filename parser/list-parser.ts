@@ -1,6 +1,6 @@
 import { decodeHtmlEntities, fixBookTitle, stripHtmlTags } from "./parser-utils";
 import { BookListItem, BookListResults } from "./parser.model";
-import { extractBookStatus } from "./status-parser";
+import BookStatusParser from "./status-parser";
 
 // Function to extract books from a list results page
 export function extractBooksFromList(html: string, language: string = 'ca'): BookListResults {
@@ -106,7 +106,7 @@ export function extractBooksFromList(html: string, language: string = 'ca'): Boo
 		}
 
 		// Extract availability statuses
-		const statuses = extractBookStatus(bookHtml, language);
+		const statuses = BookStatusParser.parse(bookHtml, language);
 
 		// Only add book if we have at least a title
 		if (title) {

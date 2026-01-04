@@ -14,7 +14,6 @@ export interface BookInfo {
 }
 export interface BookStatus {
 	location: string;
-	locationLink: string;
 	status: BookStatusType;
 	notes?: string;
 	signature?: string;

@@ -2,83 +2,84 @@ import { decodeHtmlEntities, stripHtmlTags } from "./parser-utils";
 import { FIELDS } from "./parser.config";
 import { BookStatus, BookStatusType } from "./parser.model";
 
-export function extractBookStatus(html: string, language: string = 'ca'): BookStatus[] {
-	const libraries: BookStatus[] = [];
+export default class BookStatusParser {
+	static ROW_REGEX = /<tr[^>]*class="bibItemsEntry"[^>]*>([\s\S]*?)<\/tr>/gi;
+	static CELL_REGEX = /<td[^>]*>([\s\S]*?)<\/td>/gi;
 
-	// Find the table content
-	const tableMatch = html.match(/<table[^>]*class="bibItems"[^>]*>([\s\S]*?)<\/table>/i);
-	if (!tableMatch) return libraries;
+	static parse(html: string, language: string = 'ca'): BookStatus[] {
+		const tableMatch = html.match(/<table[^>]*class="bibItems"[^>]*>([\s\S]*?)<\/table>/i);
+		if (!tableMatch) return [];
 
-	const tableContent = tableMatch[1];
+		const libraries: BookStatus[] = [];
+		const tableContent = tableMatch[1];
 
-	// Find all library rows
-	const rowRegex = /<tr[^>]*class="bibItemsEntry"[^>]*>([\s\S]*?)<\/tr>/gi;
-	let rowMatch;
+		// Find all library rows
+		let rowMatch;
 
-	while ((rowMatch = rowRegex.exec(tableContent)) !== null) {
-		const rowContent = rowMatch[1];
+		while ((rowMatch = BookStatusParser.ROW_REGEX.exec(tableContent)) !== null) {
+			const rowContent = rowMatch[1];
 
-		// Extract cells
-		const cellRegex = /<td[^>]*>([\s\S]*?)<\/td>/gi;
-		const cells: string[] = [];
-		let cellMatch;
+			// Extract cells
+			const cells: string[] = [];
+			let cellMatch;
 
-		while ((cellMatch = cellRegex.exec(rowContent)) !== null) {
-			let cellContent = cellMatch[1];
+			while ((cellMatch = BookStatusParser.CELL_REGEX.exec(rowContent)) !== null) {
+				cells.push(decodeHtmlEntities(stripHtmlTags(cellMatch[1])).trim());
+			}
 
-			// Clean the cell content
-			cellContent = decodeHtmlEntities(stripHtmlTags(cellContent)).trim();
-			cells.push(cellContent);
+			if (cells.length >= 4) {
+				const location = BookStatusParser.getLocation(cells[0]);
+				//const linkMatch = rowContent.match(/<a[^>]*href="([^"]*)"[^>]*>([^<]*)<\/a>/);
+				const statusText = cells[2]?? '';
+				const status = BookStatusParser.getStatus(statusText, language);
+
+				const library: BookStatus = {
+					location,
+					//locationLink: linkMatch ? linkMatch[1] : '',
+					signature: cells[1] || undefined,
+					status,
+					statusText: status !== BookStatusType.Available ? statusText : undefined,
+					notes: cells[3] || undefined
+				};
+
+				libraries.push(library);
+			}
 		}
 
-		if (cells.length >= 4) {
-			const location = getLocation(cells[0]);
-			const linkMatch = rowContent.match(/<a[^>]*href="([^"]*)"[^>]*>([^<]*)<\/a>/);
-			const statusText = cells[2] || '';
-			const status = getStatus(statusText, language);
-
-			const library: BookStatus = {
-				location: location,
-				locationLink: linkMatch ? linkMatch[1] : '',
-				signature: cells[1] || undefined,
-				status: status,
-				statusText: status !== BookStatusType.Available ? statusText : undefined,
-				notes: cells[3] || undefined
-			};
-
-			libraries.push(library);
-		}
+		return libraries;
 	}
+	private static getLocation(text: string): string {
+		if (text) {
+			//Name comes often like SABADELL.La Serra-Infantil
+			const separator = text.indexOf('-');
+			
+			if (separator !== -1) {
+				text = text.substring(0, separator);
+			}
 
-	return libraries;
-}
-function getLocation(text: string): string {
-	if (text) {
-		//Name comes often like SABADELL.La Serra-Infantil
-		const separator = text.indexOf('-');
+			return text.split(/\r\n|\r|\n/)[0].trim(); //Remove possible text afterwards
+		}
+
+		return '';
+	}
+	private static getStatus(text: string, language: string = 'ca'): BookStatusType {
+		const status = FIELDS[language].status;
+		switch(text){
+			case status.available:
+				return BookStatusType.Available;
+
+			case status.waitingForRetrieve:
+				return BookStatusType.WaitingForRetrieve;
+
+			case status.excluded:
+				return BookStatusType.Excluded;
+
+			default:
+				if (text.indexOf(status.onLoan) !== -1) {
+					return BookStatusType.OnLoan;
+				}
+		}
 		
-		if (separator !== -1) {
-			text = text.substring(0, separator);
-		}
-
-		return text.split(/\r\n|\r|\n/)[0].trim(); //Remove possible text afterwards
+		return BookStatusType.Other;
 	}
-
-	return '';
-}
-function getStatus(text: string, language: string = 'ca'): BookStatusType {
-	if (text === FIELDS[language].status.available) {
-		return BookStatusType.Available;
-	}
-	if (text === FIELDS[language].status.waitingForRetrieve) {
-		return BookStatusType.WaitingForRetrieve;
-	}
-	if (text === FIELDS[language].status.excluded) {
-		return BookStatusType.Excluded;
-	}
-	if (text.indexOf(FIELDS[language].status.onLoan) !== -1) {
-		return BookStatusType.OnLoan;
-	}
-
-	return BookStatusType.Other;
 }

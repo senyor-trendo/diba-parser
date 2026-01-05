@@ -1,6 +1,6 @@
 import { decodeHtmlEntities, fixBookTitle, stripHtmlTags } from "./parser-utils";
 import { BookListItem, BookListResults } from "./parser.model";
-import BookStatusParser from "./status-parser";
+import BookStatusParser from "./book-status-parser";
 
 // Function to extract books from a list results page
 export function extractBooksFromList(html: string, language: string = 'ca'): BookListResults {

@@ -5,7 +5,7 @@ import { PageType } from './parser/parser.model';
 import { checkPageType } from './parser/parser-utils';
 import { extractBooksFromList } from './parser/list-parser';
 import { extractBookFromDetail } from './parser/detail-parser';
-import BookStatusParser from './parser/status-parser';
+import BookStatusParser from './parser/book-status-parser';
 
 interface ProcessingOptions {
 	inputDir: string;

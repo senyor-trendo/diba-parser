@@ -1,4 +1,4 @@
-import { decodeHtmlEntities, stripHtmlTags } from "./parser-utils";
+import { cleanText, decodeHtmlEntities, stripHtmlTags } from "./parser-utils";
 import { FIELDS } from "./parser.config";
 import { BookStatus, BookStatusType } from "./parser.model";
 
@@ -39,7 +39,7 @@ export default class BookStatusParser {
 					signature: cells[1] || undefined,
 					status,
 					statusText: status !== BookStatusType.Available ? statusText : undefined,
-					notes: cells[3] || undefined
+					notes: cells[3]? this.cleanNote(cells[3]) : undefined
 				};
 
 				libraries.push(library);
@@ -47,6 +47,9 @@ export default class BookStatusParser {
 		}
 
 		return libraries;
+	}
+	private static cleanNote(text: string){
+		return cleanText(text).replace('v.', 'V.').replace('V;', 'V.').replace('V. 0', 'V.').replace('V. ', 'V.')
 	}
 	private static getLocation(text: string): string {
 		if (text) {

@@ -201,6 +201,3 @@ function processSingleFile() {
 if (require.main === module) {
 	processSingleFile();
 }
-
-// Export for testing or programmatic use
-export { processHtmlFile, findHtmlFiles, main };

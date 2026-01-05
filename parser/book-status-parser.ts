@@ -5,6 +5,21 @@ import { BookStatus, BookStatusType } from "./parser.model";
 export default class BookStatusParser {
 	static ROW_REGEX = /<tr[^>]*class="bibItemsEntry"[^>]*>([\s\S]*?)<\/tr>/gi;
 	static CELL_REGEX = /<td[^>]*>([\s\S]*?)<\/td>/gi;
+	//Some locations are hypen (-) separated and must be taken account
+	static LOCATION_EXCLUDED_PATTERNS = [
+		'A. Centelles',
+		'Casagemes',
+		'Caterina',
+		'Francesc',
+		'Marina',
+		'Moner',
+		'Picó',
+		'PLEGAMANS',
+		'Rafa J',
+		'REIG',
+		'Rosa',
+		'Santa Creu'
+	];
 
 	static parse(html: string, language: string = 'ca'): BookStatus[] {
 		const tableMatch = html.match(/<table[^>]*class="bibItems"[^>]*>([\s\S]*?)<\/table>/i);
@@ -30,7 +45,7 @@ export default class BookStatusParser {
 			if (cells.length >= 4) {
 				const location = BookStatusParser.getLocation(cells[0]);
 				//const linkMatch = rowContent.match(/<a[^>]*href="([^"]*)"[^>]*>([^<]*)<\/a>/);
-				const statusText = cells[2]?? '';
+				const statusText = cells[2] ?? '';
 				const status = BookStatusParser.getStatus(statusText, language);
 
 				const library: BookStatus = {
@@ -39,7 +54,7 @@ export default class BookStatusParser {
 					signature: cells[1] || undefined,
 					status,
 					statusText: status !== BookStatusType.Available ? statusText : undefined,
-					notes: cells[3]? this.cleanNote(cells[3]) : undefined
+					notes: cells[3] ? this.cleanNote(cells[3]) : undefined
 				};
 
 				libraries.push(library);
@@ -48,29 +63,34 @@ export default class BookStatusParser {
 
 		return libraries;
 	}
-	private static cleanNote(text: string){
+	private static cleanNote(text: string) {
 		return cleanText(text).replace('v.', 'V.').replace('V;', 'V.').replace('V. 0', 'V.').replace('V. ', 'V.')
 	}
 	private static getLocation(text: string): string {
-		if (text) {
-			//PALAU-SOLITÀ es una excepció
-			if(text.indexOf('PALAU-S') === -1){
-				//Name comes often like SABADELL.La Serra-Infantil
-				const separator = text.lastIndexOf('-');
-			
-				if (separator !== -1) {
-					text = text.substring(0, separator);
+		if (!text) return '';
+
+		// Name comes often like SABADELL.La Serra-Infantil
+		const separatorIdx = text.lastIndexOf('-');
+
+		if (separatorIdx !== -1) {
+			try {
+				const textAfter = text.substring(separatorIdx + 1).trim(); // +1 to skip the dash
+				const shouldNotTrim = BookStatusParser.LOCATION_EXCLUDED_PATTERNS.some(pattern => textAfter.trim().startsWith(pattern));
+
+				if (!shouldNotTrim) {
+					text = text.substring(0, separatorIdx).trim();
 				}
+			} catch (err) {
+				console.log(err, text);
 			}
-			
-			return text.split(/\r\n|\r|\n/)[0].trim(); //Remove possible text afterwards
 		}
 
-		return '';
+		// Remove possible text afterwards (newlines, etc.)
+		return text.split(/\r\n|\r|\n/)[0].trim();
 	}
 	private static getStatus(text: string, language: string = 'ca'): BookStatusType {
 		const status = FIELDS[language].status;
-		switch(text){
+		switch (text) {
 			case status.available:
 				return BookStatusType.Available;
 
@@ -85,7 +105,7 @@ export default class BookStatusParser {
 					return BookStatusType.OnLoan;
 				}
 		}
-		
+
 		return BookStatusType.Other;
 	}
 }

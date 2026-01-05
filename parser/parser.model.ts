@@ -20,11 +20,11 @@ export interface BookStatus {
 	statusText?: string;
 }
 export enum BookStatusType {
-	Available = "available",
-	Excluded = "excluded",
-	OnLoan = "loan",
-	Other = "other",
-	WaitingForRetrieve = "waiting"
+	Available = 1,
+	OnLoan = 2,
+	Excluded = 3,
+	WaitingForRetrieve = 4,
+	Other = 9
 }
 export interface BookListResults {
 	totalResults: number,

@@ -53,13 +53,16 @@ export default class BookStatusParser {
 	}
 	private static getLocation(text: string): string {
 		if (text) {
-			//Name comes often like SABADELL.La Serra-Infantil
-			const separator = text.indexOf('-');
+			//PALAU-SOLITÀ es una excepció
+			if(text.indexOf('PALAU-S') === -1){
+				//Name comes often like SABADELL.La Serra-Infantil
+				const separator = text.lastIndexOf('-');
 			
-			if (separator !== -1) {
-				text = text.substring(0, separator);
+				if (separator !== -1) {
+					text = text.substring(0, separator);
+				}
 			}
-
+			
 			return text.split(/\r\n|\r|\n/)[0].trim(); //Remove possible text afterwards
 		}
 

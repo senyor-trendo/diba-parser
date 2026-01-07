@@ -107,11 +107,11 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 
 	// Extract image URL
 	let imageUrl = '';
-	const imgRegex = /<img[^>]*id="fitxa_imatge"[^>]*src="([^"]*)"[^>]*>/i;
+	const imgRegex = /src="(https?:\/\/portadesbd\.diba\.cat[^"]*)"/i;
 	const imgMatch = html.match(imgRegex);
 	if (imgMatch && imgMatch[1]) {
 		imageUrl = imgMatch[1];
-	}
+	} 
 	imageUrl = imageUrl.replace('&log=0&m=g', '');
 
 	return {

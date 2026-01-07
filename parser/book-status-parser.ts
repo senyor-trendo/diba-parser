@@ -65,7 +65,13 @@ export default class BookStatusParser {
 		return libraries;
 	}
 	private static cleanNote(text: string) {
-		return cleanText(text).replace('v.', 'V.').replace('V;', 'V.').replace('V. 0', 'V.').replace('V. ', 'V.')
+		let note = cleanText(text).replace('v.', 'V.').replace('V;', 'V.').replace('V. 0', 'V.').replace('V. ', 'V.');
+		
+		if(note.length === 3){
+			note = note.replace('V.', 'V.0');
+		}
+		
+		return note;
 	}
 	private static getLocation(text: string): string {
 		if (!text) return '';

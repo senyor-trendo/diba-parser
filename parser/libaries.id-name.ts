@@ -1,4 +1,4 @@
-export const libsIdName = {
+export const libsIdName: { [key: string]: string } = {
 	"10": "ABRERA.Josep Roca i Bros",
 	"20": "AIGUAFREDA.Les Escoles Velles",
 	"30": "ALELLA.Ferrer i Guàrdia",

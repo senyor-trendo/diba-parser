@@ -20,7 +20,7 @@ function generateLibsFromBooksStatus(filePath: string, outputDir: string): void 
 	[...uniqueLibs]
 		.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
 		.forEach(libName => {
-			nameId[libName] = id;
+			nameId[libName] = id + '';
 			idName[id] = libName;
 			id += 10;
 		});

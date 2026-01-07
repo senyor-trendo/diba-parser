@@ -1,3 +1,4 @@
+import { libsNameId } from "./libaries.name-id";
 import { cleanText, decodeHtmlEntities, stripHtmlTags } from "./parser-utils";
 import { FIELDS } from "./parser.config";
 import { BookStatus, BookStatusType } from "./parser.model";
@@ -49,7 +50,7 @@ export default class BookStatusParser {
 				const status = BookStatusParser.getStatus(statusText, language);
 
 				const library: BookStatus = {
-					location,
+					location: libsNameId[location]?? location,
 					//locationLink: linkMatch ? linkMatch[1] : '',
 					signature: cells[1] || undefined,
 					status,

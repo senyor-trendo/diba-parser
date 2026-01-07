@@ -111,13 +111,6 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 	const imgMatch = html.match(imgRegex);
 	if (imgMatch && imgMatch[1]) {
 		imageUrl = imgMatch[1];
-	} else {
-		// Fallback: look for any img with portadesbd.diba.cat
-		const fallbackRegex = /src="(https?:\/\/portadesbd\.diba\.cat[^"]*)"/i;
-		const fallbackMatch = html.match(fallbackRegex);
-		if (fallbackMatch && fallbackMatch[1]) {
-			imageUrl = fallbackMatch[1];
-		}
 	}
 	imageUrl = imageUrl.replace('&log=0&m=g', '');
 

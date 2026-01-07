@@ -19,7 +19,7 @@ function extractByLabel(html: string, label: string): string {
 	const match = html.match(pattern);
 	if (match && match[1]) {
 		const content = match[1];
-		
+
 		return decodeHtmlEntities(stripHtmlTags(content).trim());
 	}
 
@@ -38,6 +38,34 @@ function extractRequestLink(html: string): string {
 
 	return match ? decodeURIComponent(match[1]) : '';
 }
+function extractSignature(html: string): string {
+	// First, try to find the items table
+	const itemsTableMatch = html.match(/<table[^>]*class="bibItems"[^>]*>[\s\S]*?<\/table>/);
+
+	if (!itemsTableMatch) {
+		return ''; // No items table found
+	}
+
+	const itemsTable = itemsTableMatch[0];
+
+	// Look for all signature cells (second column)
+	const signatureCells = itemsTable.match(/<td[^>]*width="18%"[^>]*>[\s\S]*?<\/td>/g);
+
+	if (signatureCells && signatureCells.length > 0) {
+		// Get the first non-empty signature
+		for (const cell of signatureCells) {
+			const linkMatch = cell.match(/<a[^>]*>([^<]+)<\/a>/);
+			if (linkMatch && linkMatch[1]) {
+				const signature = decodeHtmlEntities(linkMatch[1].trim());
+				if (signature) {
+					return signature; // Return first valid signature
+				}
+			}
+		}
+	}
+
+	return '';
+}
 /**
  * Extracts the link to the page that show all the libraries that have the item and its status
  * 
@@ -48,7 +76,7 @@ function extractStatusLink(html: string): string | undefined {
 	// find the form that contains name="volume" input
 	const formMatch = html.match(/<form[^>]*>[\s\S]*?name="volume"[\s\S]*?<\/form>/);
 
-	if (!formMatch){
+	if (!formMatch) {
 		return undefined;
 	}
 	const actionMatch = formMatch[0].match(/action="([^"]*)"/);
@@ -75,6 +103,7 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 	const uniformTitle = extractByLabel(html, fields.uniformTitle);
 	const isbn = extractByLabel(html, fields.isbn);
 	const requestLink = extractRequestLink(html);
+	const signature = extractSignature(html); // Add this line
 
 	// Extract image URL
 	let imageUrl = '';
@@ -92,14 +121,6 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 	}
 	imageUrl = imageUrl.replace('&log=0&m=g', '');
 
-	// Extract permanent link
-	let permanentLink = '';
-	const linkRegex = /<a[^>]*id="recordnum"[^>]*href="([^"]*)"[^>]*>/i;
-	const linkMatch = html.match(linkRegex);
-	if (linkMatch && linkMatch[1]) {
-		permanentLink = linkMatch[1];
-	}
-
 	return {
 		title: fixBookTitle(title),
 		author,
@@ -112,6 +133,7 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 		isbn: isbn ? parseInt(isbn) : undefined,
 		imageUrl,
 		requestLink,
-		allStatusLink: extractStatusLink(html)
+		allStatusLink: extractStatusLink(html),
+		signature
 	};
 }

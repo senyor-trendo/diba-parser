@@ -11,12 +11,12 @@ export interface BookInfo {
 	imageUrl: string;
 	allStatusLink?: string;
 	isbn?: number;
+	signature?: string;
 }
 export interface BookStatus {
-	location: string;
+	libId: string;
 	status: BookStatusType;
 	notes?: string;
-	signature?: string;
 	statusText?: string;
 }
 export enum BookStatusType {

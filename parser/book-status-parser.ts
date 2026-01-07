@@ -45,14 +45,11 @@ export default class BookStatusParser {
 
 			if (cells.length >= 4) {
 				const location = BookStatusParser.getLocation(cells[0]);
-				//const linkMatch = rowContent.match(/<a[^>]*href="([^"]*)"[^>]*>([^<]*)<\/a>/);
 				const statusText = cells[2] ?? '';
 				const status = BookStatusParser.getStatus(statusText, language);
 
 				const library: BookStatus = {
-					location: libsNameId[location]?? location,
-					//locationLink: linkMatch ? linkMatch[1] : '',
-					signature: cells[1] || undefined,
+					libId: libsNameId[location]?? location,
 					status,
 					statusText: status !== BookStatusType.Available ? statusText : undefined,
 					notes: cells[3] ? this.cleanNote(cells[3]) : undefined

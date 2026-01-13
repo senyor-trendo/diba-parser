@@ -78,6 +78,9 @@ export function checkPageType(html: string, language: string): PageType {
 	else if (html.indexOf(FIELDS[language].pageType.list) !== -1) {
 		return PageType.List;
 	}
-
-	return PageType.Detail;
+	else if (html.indexOf(FIELDS[language].pageType.detail) !== -1) {
+		return PageType.Detail;
+	}
+	
+	return PageType.Status;
 }

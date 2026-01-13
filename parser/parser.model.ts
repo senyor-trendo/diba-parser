@@ -12,6 +12,7 @@ export interface BookInfo {
 	allStatusLink?: string;
 	isbn?: number;
 	signature?: string;
+	basicStatus?: BookStatus[];
 }
 export interface BookStatus {
 	libId: string;
@@ -42,7 +43,8 @@ export interface BookListItem {
 export enum PageType {
 	NoResults = "no-results",
 	Detail = "detail",
-	List = "list"
+	List = "list",
+	Status = "status"
 }
 // Allow any string key (e.g., 'ca', 'en', 'es', 'fr', etc.)
 export interface FieldTypes {
@@ -59,6 +61,7 @@ interface FieldLabels {
 	title: string;
 	uniformTitle: string;
 	pageType: {
+		detail: string,
 		noResults: string,
 		list: string
 	},

@@ -44,21 +44,32 @@ function processHtmlFile(filePath: string, language: string, outputDir: string):
 
 			case PageType.Detail:
 				const bookInfo = extractBookFromDetail(html, language);
-				const bookStatus = BookStatusParser.parse(html, language);
-
+				
 				// Create output filenames
-				const bookResultsFile = path.join(outputDir, `${baseName}.book-results.json`);
-				const bookStatusFile = path.join(outputDir, `${baseName}.book-status.json`);
-
+				const bookResultsFile = path.join(outputDir, `${baseName}.book-detail.json`);
+				
 				// Save results to files
 				fs.writeFileSync(bookResultsFile, JSON.stringify(bookInfo, null, 2), 'utf-8');
-				fs.writeFileSync(bookStatusFile, JSON.stringify(bookStatus, null, 2), 'utf-8');
-
+				
 				console.log(`✓ Processed: ${path.basename(filePath)}`);
 				console.log(`Detail page`);
 				console.log(`  - Book info saved to: ${path.basename(bookResultsFile)}`);
-				console.log(`  - Library status saved to: ${path.basename(bookStatusFile)}`);
-				console.log(`  - Found ${bookStatus.length} library entries`);
+				console.log(`  - Found ${bookInfo.basicStatus?.length} library entries`);
+				break;
+
+			case PageType.Status:
+				const status = BookStatusParser.parse(html, language);
+
+				// Create output filenames
+				const statusFile = path.join(outputDir, `${baseName}.book-status.json`);
+
+				// Save results to files
+				fs.writeFileSync(statusFile, JSON.stringify(status, null, 2), 'utf-8');
+
+				console.log(`✓ Processed: ${path.basename(filePath)}`);
+				console.log(`Status page`);
+				console.log(`  - Library status saved to: ${path.basename(statusFile)}`);
+				console.log(`  - Found ${status.length} library entries`);
 				break;
 		}
 

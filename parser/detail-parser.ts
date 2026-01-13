@@ -1,6 +1,7 @@
+import BookStatusParser from "./book-status-parser";
 import { cleanText, decodeHtmlEntities, fixBookTitle, stripHtmlTags } from "./parser-utils";
 import { FIELDS } from "./parser.config";
-import { BookInfo } from "./parser.model";
+import { BookInfo, BookStatus } from "./parser.model";
 
 /**
  * Extracts text by label in tables
@@ -113,6 +114,12 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 		imageUrl = imgMatch[1];
 	} 
 	imageUrl = imageUrl.replace('&log=0&m=g', '');
+	const allStatusLink = extractStatusLink(html);
+
+	let basicStatus:BookStatus[] = [];
+	if(!allStatusLink){
+		basicStatus = BookStatusParser.parse(html, language);
+	}
 
 	return {
 		title: fixBookTitle(title),
@@ -126,7 +133,8 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 		isbn: isbn ? parseInt(isbn) : undefined,
 		imageUrl,
 		requestLink,
-		allStatusLink: extractStatusLink(html),
-		signature
+		allStatusLink,
+		signature,
+		basicStatus
 	};
 }

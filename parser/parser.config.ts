@@ -12,6 +12,7 @@ export const FIELDS: FieldTypes = {
 		title: 'Títol',
 		uniformTitle: 'Títol uniforme',
 		pageType:{
+			detail: '/screens/img/botons/startover',
 			noResults: 'NO HI HA RESULTATS',
 			list: '/screens/img/botons/save_to_my_lists'
 		},
@@ -33,6 +34,7 @@ export const FIELDS: FieldTypes = {
 		title: 'Title',
 		uniformTitle: 'Uniform title',
 		pageType:{
+			detail: '/screens/img/botons/startover',
 			noResults: 'NO ENTRIES FOUND',
 			list: '/screens/img/botons/save_to_my_lists'
 		},
@@ -54,6 +56,7 @@ export const FIELDS: FieldTypes = {
 		title: 'Título',
 		uniformTitle: 'Título uniforme',
 		pageType:{
+			detail: '/screens/img/botons/startover',
 			noResults: 'NO HAY RESULTADOS',
 			list: '/screens/img/botons/save_to_my_lists'
 		},

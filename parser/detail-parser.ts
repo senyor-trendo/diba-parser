@@ -107,13 +107,15 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 	const signature = extractSignature(html); // Add this line
 
 	// Extract image URL
-	let imageUrl = '';
 	const imgRegex = /src="(https?:\/\/portadesbd\.diba\.cat[^"]*)"/i;
 	const imgMatch = html.match(imgRegex);
-	if (imgMatch && imgMatch[1]) {
-		imageUrl = imgMatch[1];
-	} 
-	imageUrl = imageUrl.replace('&log=0&m=g', '');
+
+	let imageUrl;
+	//If parameter i is void the content has no image
+	if (imgMatch && imgMatch[1] && !imgMatch[1].includes('?i=&')){ 
+		imageUrl = imgMatch[1].replace('&log=0&m=g', '');
+	}
+	
 	const allStatusLink = extractStatusLink(html);
 
 	let basicStatus:BookStatus[] = [];
@@ -131,7 +133,7 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 		summary,
 		uniformTitle,
 		isbn: isbn ? parseInt(isbn) : undefined,
-		imageUrl,
+		imageUrl: imageUrl,
 		requestLink,
 		allStatusLink,
 		signature,

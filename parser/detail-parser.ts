@@ -111,8 +111,8 @@ export function extractBookFromDetail(html: string, language: string = 'ca'): Bo
 	const imgMatch = html.match(imgRegex);
 
 	let imageUrl;
-	//If parameter i is void the content has no image
-	if (imgMatch && imgMatch[1] && !imgMatch[1].includes('?i=&')){ 
+	//If parameter isbn is void the content has no image
+	if (imgMatch && imgMatch[1] && !imgMatch[1].includes('isbn=&')){ 
 		imageUrl = imgMatch[1].replace('&log=0&m=g', '');
 	}
 	
